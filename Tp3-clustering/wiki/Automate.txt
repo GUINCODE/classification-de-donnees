@@ -1,0 +1,6 @@
+Automatisme  
+    automate d'un bateau lors d'une exposition au CNAM 
+ En automatisme le terme est réservé aux dispositifs électromécaniques pilotant le système. Il commande le registre des sorties (commande des actionneurs) en fonction du registre des entrées (états des signaux envoyés par les capteurs) et de l'étape du programme en cours.
+ 
+ 
+ 

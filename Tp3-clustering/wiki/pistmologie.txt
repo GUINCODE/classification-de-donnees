@@ -1,0 +1,42 @@
+
+ Étymologie  
+ Le terme « épistémologie » vient du  grec ancien   ἐπιστήμη  /  epistémê  « connaissance, capacité à faire, art, habileté, compétence professionnelle,  science  » et  λόγος  /  lógos  «  discours  ». Le terme se traduit donc littéralement par discours sur la science.
+ 
+ Introduction dans la philosophie anglophone  
+ Une première occurrence du mot en 1847  
+La première occurrence du  néologisme   epistemology  date de  1847  : elle se trouve dans un article anonyme sur l'écrivain allemand  Jean Paul , paru dans la revue « The English Review »  . Le mot  epistemology  est alors forgé pour traduire celui de  Wissenschaftslehre  («  Doctrine de la science  »), du titre de la philosophie de Fichte   à laquelle il est fait allusion dans le roman  Titan  de Jean Paul  ,  ,   : .mw-parser-output .container{display:flex;flex-wrap:wrap;margin:1em 40px;overflow:hidden;justify-content:space-between}@media(max-width:768px){.mw-parser-output .item{flex-grow:1;flex-shrink:1;flex-basis:auto}}@media(min-width:769px){.mw-parser-output .item{flex-basis:45%}}.mw-parser-output .blockquote{margin:0}.mw-parser-output .author{margin:-0.5em 0 1em 60px} 
+     
+         « The title of one of the principal works of Fichte is 'Wissenschaftslehre,' which, after the analogy of technology, τεχνολογία, we render epistemology » 
+     
+     
+         « Le titre de l'un des principaux ouvrages de Fichte est 'Wissenschaftslehre', que, après l'analogie de technologie, τεχνολογία, nous rendons epistemology » 
+     
+ 
+ Le lien ou l'influence entre cette première introduction anonyme et la suivante qui sera faites par  James Frederick Ferrier , n'est pas connu  .  
+ 
+ Introduction d' Epistemology  en remplacement de théorie de la connaissance  
+ Le mot  epistemology  est ensuite proprement introduit dans la littérature philosophique anglophone par  James Frederick Ferrier  en 1854, qui l'a utilisé dans ses « Instituts de métaphysique »   ,   :
+ 
+ 
+     
+         «  his section of the science is properly termed the Epistemology—the doctrine or theory of knowing, just as ontology is the science of being... It answers the general question, 'What is knowing and the known?'—or more shortly, 'What is knowledge?'  » 
+         —  James Frederick Ferrier ,  Institutes of metaphysic: the theory of knowing and being 
+         
+     
+     
+         « Cette section de la science est correctement appelée l' epistemology  - la doctrine ou la théorie de la connaissance, tout comme l'ontologie est la science de l'être... Elle répond à la question générale : "Qu'est-ce que la connaissance et le connu ? » ou plus brièvement, « Qu'est-ce que la connaissance ? » 
+         —  Institutes of metaphysic: the theory of knowing and being 
+     
+ Dans cet ouvrage, Ferrier présente l’ immatérialisme  de  George Berkeley  en le reformulant dans le vocabulaire de l’ idéalisme allemand   dans la période du  néokantisme . Ferrier introduit alors le terme pour transposer le terme  Wissenschaftslehre  de Fichte  .
+ Par la suite, le terme  epistemology  reste assez peu employé pendant plusieurs décennies mais se répand chez des penseurs qui au contraire rejetaient la  philosophie romantique  allemande, c'est-à-dire celle de  Kant  et  Fichte  ,  .
+ 
+ De Russel à l'introduction du mot « épistémologie » en français  
+ Bertrand Russell  emploie  epistemology , dans son  Essai sur les fondements de la géométrie  en 1901, sous la définition d'analyse rigoureuse des discours scientifiques, pour examiner les modes de raisonnement qu'ils mettent en œuvre et décrire la structure formelle de leurs théories  .
+ 
+ La définition de Couturat  
+ C'est comme simple remplacement pour  epistemology  que le néologisme  épistémologie  a été utilisé par Russell et  Couturat  dans les années 1890 dans de leurs correspondance  . Russell écrivait ses lettres en français, car Couturat ne maîtrisait pas bien l'anglais  . C'est ensuite dans la traduction de l’ Essai sur les fondements de la géométrie  de  Russell  qu' épistémologie  apparaît officiellement pour la première fois en  France  en  1901  ,  .
+ À la traduction de l'œuvre de Russell est annexé un  Lexique philosophique  rédigé par  Louis Couturat , qui à l'entrée  Épistémologie  donne la définition d'une  «  théorie de la connaissance  appuyée sur l'étude critique des Sciences, ou d'un mot, la  Critique  telle que  Kant  l'a définie et fondée »  ,  .
+ Selon  Pierre Wagner  , Couturat introduit ainsi  une première confusion   entre  théorie de la connaissance  et  philosophie des sciences  , cette évolution n'étant pas sans conséquence  .
+ 
+ 
+ 

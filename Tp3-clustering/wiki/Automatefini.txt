@@ -1,0 +1,51 @@
+Exemples  
+ Un premier exemple : un portillon  
+    Fig. 2 : Diagramme d'état d'un portillon. 
+    Un portillon. 
+ Un exemple très simple d'un mécanisme que l'on peut modéliser par un automate fini est un  portillon d'accès  ,  .
+Un portillon, utilisé dans certains métros ou dans d'autres établissements à accès contrôlés, est une barrière avec trois bras rotatifs à hauteur de la taille. Au début, les bras sont verrouillés et bloquent l'entrée, et empêchent les usagers de passer. L'introduction d'une pièce de monnaie ou d'un  jeton  dans une fente du portillon (ou la présentation d'un ticket ou d'une carte) débloque les bras et permet le passage d'un et un seul usager à la fois. Une fois l'usager entré, les bras sont à nouveau bloqués jusqu'à ce qu'un nouveau jeton soit inséré.
+ Un portillon, vu comme un automate fini, a deux états :  verrouillé  ( «  locked  »  en anglais) et  déverrouillé  ( «  unlocked  »  en anglais)  . Deux « entrées » peuvent modifier l'état : la première si l'on insère un jeton dans la fente (entrée  jeton ) et la deuxième si l'on pousse le bras (entrée  pousser ). Dans l'état verrouillé, l'action de pousser n'a aucun effet : quel que soit le nombre de fois que l'on pousse, l'automate reste verrouillé. Si l'on insère un jeton, c'est-à-dire si l'on effectue une « entrée »  jeton , on passe de l'état  verrouillé  à l'état  déverrouillé . Dans l'état  déverrouillé , ajouter des jetons supplémentaires n'a pas d'effet, et ne change pas l'état. Mais dès qu'un usager tourne le bras du portillon, donc fournit un  pousser , la machine retourne à l'état  verrouillé .
+ L'automate d'un portillon peut être représenté par une  table de transition d'états  qui montre, pour chaque état, le nouvel état et la sortie (l'action) pour une entrée donnée.
+ 
+ 
+ 
+ État courant
+ 
+ Entrée
+ 
+ État suivant
+ 
+ Sortie
+ 
+ 
+ verrouillé
+ 
+ jeton 
+ déverrouillé 
+ Déverrouille le portillon pour qu'un usager puisse passer
+ 
+ 
+ pousser 
+ verrouillé 
+ Rien
+ 
+ 
+ déverrouillé
+ 
+ jeton 
+ déverrouillé 
+ Rien
+ 
+ 
+ pousser 
+ verrouillé 
+ Quand l'usager est passé, verrouille le portillon
+ 
+ On peut aussi représenter l'automate par un  graphe orienté , appelé un  diagramme états-transitions , comme donné ci-dessus. Chaque état est représenté par un  sommet  (visualisé par un cercle). Les  arcs  (représentés par des flèches) montrent les transitions d'un état à un autre. Chaque flèche porte une entrée qui déclenche la transition. Les données qui ne provoquent pas de changement d'état, comme un  jeton  pour l'état  déverrouillé , sont représentées par des arcs circulaires (des boucles) qui tournent autour de l’état. La flèche qui entre dans l'état  verrouillé  depuis le point noir sert à indiquer que cet état est l' état initial , au début de la modélisation.
+ 
+ Un autre exemple : le loup, la chèvre et le chou  
+    Le loup, la chèvre et le chou. Chaque état représente ce que le passeur a déjà transporté (le chou est noté « S »). 
+ L'exemple que voici   illustre les possibilités qui s'offrent à un passeur qui doit faire traverser, d'une rive à l'autre, un loup, une chèvre et un chou (c'est une variante des nombreux  problèmes de passage de rivière ). Sa barque ne lui permet que d'emporter un seul des trois objets à la fois et, bien entendu, il ne peut laisser ensemble loup et chèvre ni chèvre et chou. Dans le diagramme ci-contre, un état représente ce que le passeur a déjà pu transporter sur l’autre rive (« P » représente le passeur, « L » le loup, « C » la chèvre, et  le chou  a été noté par « S ») : au début rien, à la fin tout. Sur les flèches, les objets transportés (et lui-même). Une des deux séquences de transport est  CPLCSPC , l'autre est  CPSCLPC . Bien entendu, on néglige les aller-retour-aller inutiles.
+ 
+ 
+ 
