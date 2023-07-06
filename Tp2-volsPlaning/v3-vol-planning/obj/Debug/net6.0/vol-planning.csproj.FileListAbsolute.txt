@@ -1,0 +1,60 @@
+/Volumes/School/Classification de donnée/Tp2/vol-planning/bin/Debug/net6.0/vol-planning
+/Volumes/School/Classification de donnée/Tp2/vol-planning/bin/Debug/net6.0/vol-planning.deps.json
+/Volumes/School/Classification de donnée/Tp2/vol-planning/bin/Debug/net6.0/vol-planning.runtimeconfig.json
+/Volumes/School/Classification de donnée/Tp2/vol-planning/bin/Debug/net6.0/vol-planning.dll
+/Volumes/School/Classification de donnée/Tp2/vol-planning/bin/Debug/net6.0/vol-planning.pdb
+/Volumes/School/Classification de donnée/Tp2/vol-planning/obj/Debug/net6.0/vol-planning.csproj.AssemblyReference.cache
+/Volumes/School/Classification de donnée/Tp2/vol-planning/obj/Debug/net6.0/vol-planning.GeneratedMSBuildEditorConfig.editorconfig
+/Volumes/School/Classification de donnée/Tp2/vol-planning/obj/Debug/net6.0/vol-planning.AssemblyInfoInputs.cache
+/Volumes/School/Classification de donnée/Tp2/vol-planning/obj/Debug/net6.0/vol-planning.AssemblyInfo.cs
+/Volumes/School/Classification de donnée/Tp2/vol-planning/obj/Debug/net6.0/vol-planning.csproj.CoreCompileInputs.cache
+/Volumes/School/Classification de donnée/Tp2/vol-planning/obj/Debug/net6.0/vol-planning.dll
+/Volumes/School/Classification de donnée/Tp2/vol-planning/obj/Debug/net6.0/refint/vol-planning.dll
+/Volumes/School/Classification de donnée/Tp2/vol-planning/obj/Debug/net6.0/vol-planning.pdb
+/Volumes/School/Classification de donnée/Tp2/vol-planning/obj/Debug/net6.0/vol-planning.genruntimeconfig.cache
+/Volumes/School/Classification de donnée/Tp2/vol-planning/obj/Debug/net6.0/ref/vol-planning.dll
+/Volumes/School/Classification de donnée/Tp2/v2-vol-planning /bin/Debug/net6.0/vol-planning
+/Volumes/School/Classification de donnée/Tp2/v2-vol-planning /bin/Debug/net6.0/vol-planning.deps.json
+/Volumes/School/Classification de donnée/Tp2/v2-vol-planning /bin/Debug/net6.0/vol-planning.runtimeconfig.json
+/Volumes/School/Classification de donnée/Tp2/v2-vol-planning /bin/Debug/net6.0/vol-planning.dll
+/Volumes/School/Classification de donnée/Tp2/v2-vol-planning /bin/Debug/net6.0/vol-planning.pdb
+/Volumes/School/Classification de donnée/Tp2/v2-vol-planning /obj/Debug/net6.0/vol-planning.csproj.AssemblyReference.cache
+/Volumes/School/Classification de donnée/Tp2/v2-vol-planning /obj/Debug/net6.0/vol-planning.GeneratedMSBuildEditorConfig.editorconfig
+/Volumes/School/Classification de donnée/Tp2/v2-vol-planning /obj/Debug/net6.0/vol-planning.AssemblyInfoInputs.cache
+/Volumes/School/Classification de donnée/Tp2/v2-vol-planning /obj/Debug/net6.0/vol-planning.AssemblyInfo.cs
+/Volumes/School/Classification de donnée/Tp2/v2-vol-planning /obj/Debug/net6.0/vol-planning.csproj.CoreCompileInputs.cache
+/Volumes/School/Classification de donnée/Tp2/v2-vol-planning /obj/Debug/net6.0/vol-planning.dll
+/Volumes/School/Classification de donnée/Tp2/v2-vol-planning /obj/Debug/net6.0/refint/vol-planning.dll
+/Volumes/School/Classification de donnée/Tp2/v2-vol-planning /obj/Debug/net6.0/vol-planning.pdb
+/Volumes/School/Classification de donnée/Tp2/v2-vol-planning /obj/Debug/net6.0/vol-planning.genruntimeconfig.cache
+/Volumes/School/Classification de donnée/Tp2/v2-vol-planning /obj/Debug/net6.0/ref/vol-planning.dll
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v2-vol-planning /bin/Debug/net6.0/vol-planning
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v2-vol-planning /bin/Debug/net6.0/vol-planning.deps.json
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v2-vol-planning /bin/Debug/net6.0/vol-planning.runtimeconfig.json
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v2-vol-planning /bin/Debug/net6.0/vol-planning.dll
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v2-vol-planning /bin/Debug/net6.0/vol-planning.pdb
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v2-vol-planning /obj/Debug/net6.0/vol-planning.csproj.AssemblyReference.cache
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v2-vol-planning /obj/Debug/net6.0/vol-planning.GeneratedMSBuildEditorConfig.editorconfig
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v2-vol-planning /obj/Debug/net6.0/vol-planning.AssemblyInfoInputs.cache
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v2-vol-planning /obj/Debug/net6.0/vol-planning.AssemblyInfo.cs
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v2-vol-planning /obj/Debug/net6.0/vol-planning.csproj.CoreCompileInputs.cache
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v2-vol-planning /obj/Debug/net6.0/vol-planning.dll
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v2-vol-planning /obj/Debug/net6.0/refint/vol-planning.dll
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v2-vol-planning /obj/Debug/net6.0/vol-planning.pdb
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v2-vol-planning /obj/Debug/net6.0/vol-planning.genruntimeconfig.cache
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v2-vol-planning /obj/Debug/net6.0/ref/vol-planning.dll
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v3-vol-planning/bin/Debug/net6.0/vol-planning
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v3-vol-planning/bin/Debug/net6.0/vol-planning.deps.json
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v3-vol-planning/bin/Debug/net6.0/vol-planning.runtimeconfig.json
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v3-vol-planning/bin/Debug/net6.0/vol-planning.dll
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v3-vol-planning/bin/Debug/net6.0/vol-planning.pdb
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v3-vol-planning/obj/Debug/net6.0/vol-planning.csproj.AssemblyReference.cache
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v3-vol-planning/obj/Debug/net6.0/vol-planning.GeneratedMSBuildEditorConfig.editorconfig
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v3-vol-planning/obj/Debug/net6.0/vol-planning.AssemblyInfoInputs.cache
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v3-vol-planning/obj/Debug/net6.0/vol-planning.AssemblyInfo.cs
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v3-vol-planning/obj/Debug/net6.0/vol-planning.csproj.CoreCompileInputs.cache
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v3-vol-planning/obj/Debug/net6.0/vol-planning.dll
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v3-vol-planning/obj/Debug/net6.0/refint/vol-planning.dll
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v3-vol-planning/obj/Debug/net6.0/vol-planning.pdb
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v3-vol-planning/obj/Debug/net6.0/vol-planning.genruntimeconfig.cache
+/Volumes/School/Classification de donnée/Tp2-volsPlaning/v3-vol-planning/obj/Debug/net6.0/ref/vol-planning.dll

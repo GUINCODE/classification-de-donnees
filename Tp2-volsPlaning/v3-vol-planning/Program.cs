@@ -6,12 +6,11 @@ using System.Linq;
 using System.Xml.Linq;
 public class Solution
 {
-    public Dictionary<string, Flight>? MeuilleurVolPourChaqueParticipantAller { get; set; }
-    public Dictionary<string, Flight>? MeuilleurVolPourChaqueParticipantRetour { get; set; }
-   
+    public Dictionary<string, Flight>? VolsAller { get; set; }
+    public Dictionary<string, Flight>? VolsRetour { get; set; }
 
-    public decimal CoutAller => MeuilleurVolPourChaqueParticipantAller?.Sum(x => x.Value.GetCostWithWaitingTimeAller()) ?? 0;
-    public decimal CoutRetour => MeuilleurVolPourChaqueParticipantRetour?.Sum(x => x.Value.GetCostWithWaitingTimeRetour()) ?? 0;
+    public decimal CoutAller => VolsAller?.Sum(x => x.Value.GetCostWithWaitingTimeAller()) ?? 0;
+    public decimal CoutRetour => VolsRetour?.Sum(x => x.Value.GetCostWithWaitingTimeRetour()) ?? 0;
     public decimal Cout => CoutAller + CoutRetour;
     public void Print()
     {
@@ -26,13 +25,13 @@ public class Solution
         Console.WriteLine($"Coût total Retour : {CoutRetour} $");
         Console.WriteLine();
 
-        if (MeuilleurVolPourChaqueParticipantAller != null)
+        if (VolsAller != null)
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Vols Aller ({MeuilleurVolPourChaqueParticipantAller.Count} vols) :");
+            Console.WriteLine($"Vols Aller ({VolsAller.Count} vols) :");
             Console.ResetColor();
 
-            foreach (var (participant, flight) in MeuilleurVolPourChaqueParticipantAller)
+            foreach (var (participant, flight) in VolsAller)
             {
                 Console.WriteLine($"{participant} : {flight.Origin} - {flight.Destination}: date d'arrivée: {flight.Arrival}, - Cout du vol: {flight.GetCostWithWaitingTimeAller()} $, soit (Prix: {flight.Price} $  et Temps d'attente: {(flight.Temps_Attente_Aller > 30 ? flight.Temps_Attente_Aller - 30 : 0)} min)");
             }
@@ -40,13 +39,13 @@ public class Solution
             Console.WriteLine();
         }
 
-        if (MeuilleurVolPourChaqueParticipantRetour != null)
+        if (VolsRetour != null)
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Vols Retour ({MeuilleurVolPourChaqueParticipantRetour.Count} vols) :");
+            Console.WriteLine($"Vols Retour ({VolsRetour.Count} vols) :");
             Console.ResetColor();
 
-            foreach (var (participant, flight) in MeuilleurVolPourChaqueParticipantRetour)
+            foreach (var (participant, flight) in VolsRetour)
             {
                 Console.WriteLine($"{participant} : {flight.Origin} - {flight.Destination}: date de départ: {flight.Departure}, - Cout du vol: {flight.GetCostWithWaitingTimeRetour()} $, soit (Prix: {flight.Price} $  et Temps d'attente: {(flight.Temps_Attente_Retour > 30 ? flight.Temps_Attente_Retour - 30 : 0)} min)");
             }
@@ -70,8 +69,8 @@ public class Flight
     public double Duration => (Arrival - Departure).TotalHours;
     public double Temps_Attente_Aller => (new DateTime(2010, 7, 27, 17, 0, 0) - Arrival).TotalMinutes;
     public double Temps_Attente_Retour => (Departure - new DateTime(2010, 8, 3, 15, 0, 0)).TotalMinutes;
- 
-
+    public Flight? Precedent { get; set; }
+    public Flight? Suivant { get; set; }
     public decimal GetCostWithWaitingTimeAller()
     {
         decimal cost = Price;
@@ -123,36 +122,172 @@ namespace agb.dev.vol_planning
 
         public static void Main()
         {
-            ShowRamdomSolution();
+
+            var volsAller = VolsAllerPourChaqueParticipants(ValidDatesAller);
+            var volsRetour = VolsRetourPourChaqueParticipants(ValidDatesRetour);
+
+            var ramdomUniqueVolsAller = RandomlyVolsAllerParParticipant(volsAller);
+            var ramdomUniqueVolsRetour = RamdomlyVolsRetourParParticipant(volsRetour);
+
+            var firsSolution = new Solution
+            {
+                VolsAller = ramdomUniqueVolsAller,
+                VolsRetour = ramdomUniqueVolsRetour
+            };
+
+            var espaceDeSolution = CreerAutresSolutionAvecSuivantEtPrecedentDeChaqueVolsDelaSolution(firsSolution);
+
+            AfficherMeuilleurSolution(espaceDeSolution);
+
         }
 
-        private static void ShowRamdomSolution()
+        private static void AfficherMeuilleurSolution(List<Solution> espaceDeSolution)
         {
-            var listeSolution = new List<Solution>();
+            // affiche la taille de l'espace de solution
+            Console.WriteLine($"Taille de l'espace de solution : {espaceDeSolution.Count}");
 
-           
+            var meuilleurSolution = espaceDeSolution.OrderBy(s => s.Cout).First();
+            meuilleurSolution.Print();
 
-                var possibleSolutionsAller = VolsPourChaqueParticipantsAller(ValidDatesAller);
-                var possibleSolutionsRetour = VolsPourChaqueParticipantsRetour(ValidDatesRetour);
-
-                var meuilleurVolByParticipant_Aller = MeuilleurVolPourChaqueParticipantAller(possibleSolutionsAller);
-                var meuilleurVolByParticipant_Retour = MeuilleurVolPourChaqueParticpantRetour(possibleSolutionsRetour);
-
-               
-                var solution = new Solution
-                {
-                    MeuilleurVolPourChaqueParticipantAller = meuilleurVolByParticipant_Aller,
-                    MeuilleurVolPourChaqueParticipantRetour = meuilleurVolByParticipant_Retour
-                };
-
-                listeSolution.Add(solution);
-         
-
-            var listeSolutionSorted = listeSolution.OrderBy(x => x.Cout).ToList();
-            var bestSolution = listeSolutionSorted.First();
-            bestSolution.Print();
-            
         }
+
+
+        private static List<Solution> CreerAutresSolutionAvecSuivantEtPrecedentDeChaqueVolsDelaSolution(Solution firstSolution)
+        {
+            var listeSolutionFinale = new List<Solution>();
+            listeSolutionFinale.Add(firstSolution);
+
+            if (firstSolution.VolsAller != null)
+            {
+                var volsAller = firstSolution.VolsAller;
+                for (int i = 0; i < volsAller.Count; i++)
+                {
+                    var vol = volsAller.ElementAt(i);
+                    var volPrecedent = i > 0 ? volsAller.ElementAt(i - 1).Value : null;
+                    var volSuivant = i < volsAller.Count - 1 ? volsAller.ElementAt(i + 1).Value : null;
+
+                    if (volPrecedent != null)
+                    {
+                        var oneSolution = CreateSolutionCopy(firstSolution);
+                        oneSolution.VolsAller[volsAller.ElementAt(i).Key] = volPrecedent;
+                        oneSolution.VolsAller[volsAller.ElementAt(i).Key].Precedent = null;
+                        oneSolution.VolsAller[volsAller.ElementAt(i).Key].Suivant = null;
+                        listeSolutionFinale.Add(oneSolution);
+                    }
+
+                    if (volSuivant != null)
+                    {
+                        
+                        var oneSolution = CreateSolutionCopy(firstSolution);
+                        oneSolution.VolsAller[volsAller.ElementAt(i).Key] = volSuivant;
+                        oneSolution.VolsAller[volsAller.ElementAt(i).Key].Precedent = null;
+                        oneSolution.VolsAller[volsAller.ElementAt(i).Key].Suivant = null;
+                        listeSolutionFinale.Add(oneSolution);
+                    }
+                }
+            }
+
+            if (firstSolution.VolsRetour != null)
+            {
+                var volsRetour = firstSolution.VolsRetour;
+                for (int i = 0; i < volsRetour.Count; i++)
+                {
+                    var vol = volsRetour.ElementAt(i);
+                    var volPrecedent = i > 0 ? volsRetour.ElementAt(i - 1).Value : null;
+                    var volSuivant = i < volsRetour.Count - 1 ? volsRetour.ElementAt(i + 1).Value : null;
+
+                    if (volPrecedent != null)
+                    {
+                        var oneSolution = CreateSolutionCopy(firstSolution);
+                        oneSolution.VolsRetour[volsRetour.ElementAt(i).Key] = volPrecedent;
+                        oneSolution.VolsRetour[volsRetour.ElementAt(i).Key].Precedent = null;
+                        oneSolution.VolsRetour[volsRetour.ElementAt(i).Key].Suivant = null;
+                        listeSolutionFinale.Add(oneSolution);
+                    }
+
+                    if (volSuivant != null)
+                    {
+                        var oneSolution = CreateSolutionCopy(firstSolution);
+                        oneSolution.VolsRetour[volsRetour.ElementAt(i).Key] = volSuivant;
+                        oneSolution.VolsRetour[volsRetour.ElementAt(i).Key].Precedent = null;
+                        oneSolution.VolsRetour[volsRetour.ElementAt(i).Key].Suivant = null;
+                        listeSolutionFinale.Add(oneSolution);
+                    }
+                }
+            }
+
+            return listeSolutionFinale;
+        }
+
+
+        private static Solution CreateSolutionCopy(Solution solution)
+        {
+            var copiedSolution = new Solution();
+
+            if (solution.VolsAller != null)
+            {
+                copiedSolution.VolsAller = new Dictionary<string, Flight>(solution.VolsAller);
+            }
+
+            if (solution.VolsRetour != null)
+            {
+                copiedSolution.VolsRetour = new Dictionary<string, Flight>(solution.VolsRetour);
+            }
+
+            return copiedSolution;
+        }
+
+
+
+        // private static Flight? GetPrecedentVolsByKey(string key, Dictionary<string, List<Flight>> vols)
+        // {
+        //     int index = -1;
+        //     for (int i = 0; i < vols.Count; i++)
+        //     {
+        //         if (vols.ElementAt(i).Key == key)
+        //         {
+        //             index = i;
+        //             break;
+        //         }
+        //     }
+
+        //     if (index > 0)
+        //     {
+        //         var previousKey = vols.ElementAt(index - 1).Key;
+        //         var previousFlights = vols[previousKey];
+        //         if (previousFlights.Count > 0)
+        //         {
+        //             return previousFlights[0];
+        //         }
+        //     }
+
+        //     return null;
+        // }
+
+        // private static Flight? GetSuivantVolsByKey(string key, Dictionary<string, List<Flight>> vols)
+        // {
+        //     int index = -1;
+        //     for (int i = 0; i < vols.Count; i++)
+        //     {
+        //         if (vols.ElementAt(i).Key == key)
+        //         {
+        //             index = i;
+        //             break;
+        //         }
+        //     }
+
+        //     if (index < vols.Count - 1)
+        //     {
+        //         var nextKey = vols.ElementAt(index + 1).Key;
+        //         var nextFlights = vols[nextKey];
+        //         if (nextFlights.Count > 0)
+        //         {
+        //             return nextFlights[0];
+        //         }
+        //     }
+
+        //     return null;
+        // }
 
 
         private static List<Participant> GetParticipants()
@@ -170,7 +305,7 @@ namespace agb.dev.vol_planning
             };
         }
 
-        private static Dictionary<string, List<Flight>> VolsPourChaqueParticipantsAller(List<DateTime> validDates)
+        private static Dictionary<string, List<Flight>> VolsAllerPourChaqueParticipants(List<DateTime> validDates)
         {
             var flightsDictionary = new Dictionary<string, List<Flight>>();
 
@@ -200,8 +335,23 @@ namespace agb.dev.vol_planning
                                 Airline = flight.Element("airline_display")!.Value
                             })
                             .Where(x => x.Arrival.Date == DateTime.ParseExact("2010-07-27", "yyyy-MM-dd", CultureInfo.InvariantCulture) && x.Arrival.TimeOfDay <= new TimeSpan(17, 0, 0))
+                            .OrderBy(x => x.Arrival)
                             .ToList();
-                       
+
+                            // Ajout de vols precedent et suivant pour chaque vols 
+                            for (int i = 0; i < flights.Count; i++)
+                            {
+                                if (i > 0)
+                                {
+                                    flights[i].Precedent = flights[i - 1];
+                                }
+
+                                if (i < flights.Count - 1)
+                                {
+                                    flights[i].Suivant = flights[i + 1];
+                                }
+                            }
+
 
                         flightsDictionary[fileName] = flights;
                     }
@@ -214,10 +364,13 @@ namespace agb.dev.vol_planning
 
             var vols = CustomParticipantNameAller(flightsDictionary);
 
+
+
+
             return vols;
         }
 
-        private static Dictionary<string, List<Flight>> VolsPourChaqueParticipantsRetour(List<DateTime> validDates)
+        private static Dictionary<string, List<Flight>> VolsRetourPourChaqueParticipants(List<DateTime> validDates)
         {
             var flightsDictionary = new Dictionary<string, List<Flight>>();
 
@@ -247,7 +400,22 @@ namespace agb.dev.vol_planning
                                 Airline = flight.Element("airline_display")!.Value
                             })
                             .Where(x => x.Departure.Date == DateTime.ParseExact("2010-08-03", "yyyy-MM-dd", CultureInfo.InvariantCulture) && x.Departure.TimeOfDay >= new TimeSpan(15, 0, 0))
+                            .OrderBy(x => x.Departure)
                             .ToList();
+
+                        // Ajout de vols precedent et suivant pour chaque vols
+                        for (int i = 0; i < flights.Count; i++)
+                        {
+                            if (i > 0)
+                            {
+                                flights[i].Precedent = flights[i - 1];
+                            }
+
+                            if (i < flights.Count - 1)
+                            {
+                                flights[i].Suivant = flights[i + 1];
+                            }
+                        }
 
                         flightsDictionary[fileName] = flights;
                     }
@@ -263,140 +431,46 @@ namespace agb.dev.vol_planning
             return vols;
         }
 
-   
 
-        private static Dictionary<string, Flight> MeuilleurVolPourChaqueParticipantAller(Dictionary<string, List<Flight>> volsAller)
+        private static Dictionary<string, Flight> RandomlyVolsAllerParParticipant(Dictionary<string, List<Flight>> volsAller)
         {
-            Dictionary<string, Flight> meilleursVols = new Dictionary<string, Flight>();
+            var random = new Random();
+            var vols = new Dictionary<string, Flight>();
+            var participants = GetParticipants();
 
-            // Parcours de chaque participant
-            foreach (var participant in volsAller.Keys)
+            foreach (var participant in participants)
             {
-                var volsParticipant = volsAller[participant];
-                // ici on verifie les prochains et le precedents vol pour voir s'il offre pas un cout plus bas
-               
-                // on recuper un vol de facon ramdom 
-                var random = new Random();
-                var randomVol = volsParticipant.OrderBy(x => random.Next()).Take(1).ToList();
-                var meilleurVolRamdomly = randomVol[0];
-              
+                var volsParticipant = volsAller[participant.Name];
+                int randomIndex = random.Next(0, volsParticipant.Count);
+                Flight volAleatoire = volsParticipant[randomIndex];
 
-                
-                var volsParJourEtHeureArriver = volsParticipant.OrderBy(f => f.Arrival.TimeOfDay);
-                var indexMeilleurVol = volsParJourEtHeureArriver.ToList().IndexOf(meilleurVolRamdomly);
-
-                var meuilleurVolTemporel1 =meilleurVolRamdomly;
-
-                // Vérification des vols precedents
-                while (indexMeilleurVol > 1)
-                {
-                    var volPrecedent = volsParticipant[indexMeilleurVol - 2];
-                    var volSelected = volPrecedent;
-                    if (volPrecedent.GetCostWithWaitingTimeAller() < meilleurVolRamdomly.GetCostWithWaitingTimeAller())
-                    {
-                        if(volPrecedent.GetCostWithWaitingTimeAller() < volSelected.GetCostWithWaitingTimeAller()){
-                            volSelected = volPrecedent;
-                        } 
-                        meuilleurVolTemporel1 = volSelected;
-                    }
-                  
-
-                    indexMeilleurVol--;
-                }
-                    // Console.WriteLine($"volPrecedent selectionner: {meuilleurVolTemporel1.GetCostWithWaitingTimeAller()} pour le vol {meuilleurVolTemporel1.Airline}");
-
-                var meuilleurVolTemporel2 = meilleurVolRamdomly;
-                // Vérification des vols suivants
-                while (indexMeilleurVol < volsParticipant.Count - 2)
-                {
-                    var volSuivant = volsParticipant[indexMeilleurVol + 2];
-                    var volSelected = volSuivant;
-                    if (volSuivant.GetCostWithWaitingTimeAller() < meilleurVolRamdomly.GetCostWithWaitingTimeAller())
-                    {
-                        if(volSuivant.GetCostWithWaitingTimeAller() < volSelected.GetCostWithWaitingTimeAller()){
-                            volSelected = volSuivant;
-                        }
-                        meuilleurVolTemporel2 = volSelected;
-                    }
-
-                    indexMeilleurVol++;
-                }
-
-                var meilleurVol = meuilleurVolTemporel2.GetCostWithWaitingTimeAller() < meuilleurVolTemporel1.GetCostWithWaitingTimeAller() ?  meuilleurVolTemporel2 : meuilleurVolTemporel1 ;
-
-
-
-                // Ajout du participant avec son meilleur vol dans le dictionnaire
-                meilleursVols.Add(participant, meilleurVol);
+                vols[participant.Name] = volAleatoire;
             }
 
-           
-
-            // Tri des meilleurs vols par heure d'arrivée
-            var volsTries = meilleursVols.OrderBy(v => v.Value.Arrival.TimeOfDay);
-
-           
-
-            return meilleursVols;
+            return vols;
         }
 
-        private static Dictionary<string, Flight> MeuilleurVolPourChaqueParticpantRetour(Dictionary<string, List<Flight>> vols)
+        private static Dictionary<string, Flight> RamdomlyVolsRetourParParticipant(Dictionary<string, List<Flight>> volsRetour)
         {
-            Dictionary<string, Flight> meilleursVols = new Dictionary<string, Flight>();
+            var random = new Random();
+            var vols = new Dictionary<string, Flight>();
+            var participants = GetParticipants();
 
-            // Parcours de chaque participant
-            foreach (var participant in vols.Keys)
+            foreach (var participant in participants)
             {
-                // Console.WriteLine("Participant : " + participant);
-                var volsParticipant = vols[participant];
+                var volsParticipant = volsRetour[participant.Name];
+                int randomIndex = random.Next(0, volsParticipant.Count);
+                Flight volAleatoire = volsParticipant[randomIndex];
 
-
-                // on recuper un vol de facon ramdom 
-                var random = new Random();
-                var randomVol = volsParticipant.OrderBy(x => random.Next()).Take(1).ToList();
-                var meilleurVol = randomVol[0];
-
-                // var meilleurVol = volsParticipant.OrderBy(f => f.GetCostWithWaitingTimeRetour()).First();
-                var volsParJourEtHeureArriver = volsParticipant.OrderBy(f => f.Departure.TimeOfDay);    
-                var indexMeilleurVol = volsParJourEtHeureArriver.ToList().IndexOf(meilleurVol);
-
-                // Vérification des vols precedents
-                while (indexMeilleurVol > 1)
-                {
-                    var volPrecedent = volsParticipant[indexMeilleurVol - 2];
-                    if (volPrecedent.GetCostWithWaitingTimeRetour() < meilleurVol.GetCostWithWaitingTimeRetour())
-                    {
-                        meilleurVol = volPrecedent;
-                    }
-
-                    indexMeilleurVol--;
-                }
-                
-                //  verification des vols suivants
-                while (indexMeilleurVol < volsParticipant.Count - 2)
-                {
-                    var volSuivant = volsParticipant[indexMeilleurVol + 2];
-                    if (volSuivant.GetCostWithWaitingTimeRetour() < meilleurVol.GetCostWithWaitingTimeRetour())
-                    {
-                        meilleurVol = volSuivant;
-                    }
-
-                    indexMeilleurVol++;
-                }
-
-
-
-                if (meilleurVol != null)
-                {
-                    meilleursVols.Add(participant, meilleurVol);
-                }
+                vols[participant.Name] = volAleatoire;
             }
 
-            // Tri des meilleurs vols par heure de départ
-            var volsTries = meilleursVols.OrderBy(v => v.Value.Departure.TimeOfDay);
-            
-            return meilleursVols;
+            return vols;
+
         }
+
+
+
 
 
         private static IEnumerable<Flight> GetFlyByOriginNamAller(string origin, Dictionary<string, List<Flight>> all_Aller_fly)
