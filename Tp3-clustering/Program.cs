@@ -8,14 +8,15 @@ class Program
 {
     static void Main()
     {
-        var dictionnaireCible = new Dictionary<string, int>();
-
         string dossierWiki = "wiki";
         string[] nomsFichiers = Directory.GetFiles(dossierWiki, "*.txt");
+
         var articleWithListMots = new Dictionary<string, List<string>>();
         var tousLesMots = new List<string>();
 
-       
+        var occurenceMotsParArticle = new Dictionary<string, Dictionary<string, int>>();
+        var similarityArticle = new Dictionary<string, Dictionary<string, double>>();
+
         foreach (string nomFichier in nomsFichiers)
         {
             string nomArticle = Path.GetFileNameWithoutExtension(nomFichier);
@@ -24,77 +25,153 @@ class Program
             string[] mots = contenuNettoye.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             articleWithListMots[nomArticle] = mots.Distinct().ToList();
             tousLesMots.AddRange(mots.Distinct());
+
+            // on compte le nombre d'occurence de chaque mot dans chaque article
+            var motCompteDansArticle = CompterOccurenceMotsDansArticle(nomArticle, articleWithListMots[nomArticle]);
+
+            occurenceMotsParArticle[nomArticle] = motCompteDansArticle;
         }
 
-        // on verfie si pour chaque mot, il est present dans chaque article
-        var apparitonMotsDictionary = new Dictionary<string, int>();
-        foreach (var mot in tousLesMots)
+        similarityArticle = CalculDeSimilarity(occurenceMotsParArticle);
+
+        // Appliquation de K-means clustering
+        int k = 5; // Nombre de groupe souhaité
+        var clusteringResult = KMeansClustering(similarityArticle, k);
+
+
+
+        // Afficher les articles par groupe
+        int totalClusters = clusteringResult.Values.Max() + 1;
+        List<string>[] groupes = new List<string>[totalClusters];
+        for (int i = 0; i < totalClusters; i++)
         {
-            foreach (var article in articleWithListMots)
+            groupes[i] = new List<string>();
+        }
+
+        foreach (var articleCluster in clusteringResult)
+        {
+            string articleName = articleCluster.Key;
+            int cluster = articleCluster.Value;
+            groupes[cluster].Add(articleName);
+        }
+
+        // trier les groupes par ordre decroissant sur le nombres d'articles
+        Array.Sort(groupes, (x, y) => y.Count - x.Count);
+
+        Console.WriteLine();
+        Console.WriteLine(" Afficahe des groupes d'articles:");
+        for (int i = 0; i < totalClusters; i++)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Groupe d'articles: {i + 1} (contient {groupes[i].Count} articles)");
+
+            if (groupes[i].Count >= 2)
             {
-                if (article.Value.Contains(mot))
+                double similarity = similarityArticle[groupes[i][0]][groupes[i][1]];
+               
+                Console.ResetColor();
+               
+                Console.ForegroundColor = ConsoleColor.Yellow;
+
+                Console.WriteLine($"Similarité entre les articles du groupe : {similarity}");
+            }
+
+            Console.ResetColor();
+
+            foreach (var article in groupes[i])
+            {
+                Console.WriteLine(article);
+            }
+
+            Console.WriteLine();
+        }
+        // affichage les details des similarité entres les articles
+        Console.WriteLine();
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine("Affichage des details de similarités:");
+        Console.ResetColor();
+        Console.Write("souhaitez vous affichers les details de similarité entre les articles ? (O/N): ");
+        string? reponse = Console.ReadLine();
+        if (reponse != null && (reponse == "O" || reponse == "o"))
+        {
+            AfficherSimilarite(similarityArticle);
+        }
+        
+        
+
+
+    }
+
+    static void AfficherSimilarite(Dictionary<string, Dictionary<string, double>> similarityArticle ){
+        foreach (var article1 in similarityArticle)
+        {
+            string articleName1 = article1.Key;
+
+            foreach (var article2 in article1.Value)
+            {
+                string articleName2 = article2.Key;
+                double similarity = article2.Value;
+
+                Console.WriteLine($"Similarité [{articleName1} - {articleName2}] : {similarity}");
+            }
+        }
+    }
+
+    static Dictionary<string, int> CompterOccurenceMotsDansArticle(string articleName, List<string> mots)
+    {
+        var result = new Dictionary<string, int>();
+        foreach (var mot in mots)
+        {
+            if (result.ContainsKey(mot))
+            {
+                result[mot]++;
+            }
+            else
+            {
+                result[mot] = 1;
+            }
+        }
+        return result;
+    }
+
+    static Dictionary<string, Dictionary<string, double>> CalculDeSimilarity(Dictionary<string, Dictionary<string, int>> articleWithListMots)
+    {
+        var similarityArticle = new Dictionary<string, Dictionary<string, double>>();
+
+        foreach (var article1 in articleWithListMots)
+        {
+            string articleName1 = article1.Key;
+            similarityArticle[articleName1] = new Dictionary<string, double>();
+
+            foreach (var article2 in articleWithListMots)
+            {
+                string articleName2 = article2.Key;
+
+                if (articleName1 == articleName2)
                 {
-                    if (apparitonMotsDictionary.ContainsKey(mot))
-                    {
-                        apparitonMotsDictionary[mot]++;
-                    }
-                    else
-                    {
-                        apparitonMotsDictionary[mot] = 1;
-                    }
+                    similarityArticle[articleName1][articleName2] = 1.0; // La similarité avec soi-même est de 1
+                }
+                else
+                {
+                    double similarity = CalculateSimilarity(article1.Value, article2.Value);
+                    similarityArticle[articleName1][articleName2] = similarity;
                 }
             }
         }
-       
-        // on filtre les mots qui apparaissent dans au moins 10% des articles et maximum 50% des articles
-        int totalCount = articleWithListMots.Count;
-        int minCount = (int)(totalCount * 0.1);
-        int maxCount = (int)(totalCount * 0.5);
-        var apparitonMotsDictionaryFiltre = apparitonMotsDictionary.Where(entry => entry.Value >= minCount && entry.Value <= maxCount)
-                                                                   .ToDictionary(entry => entry.Key, entry => entry.Value);
-        // on affiche le apparitonMotsDictionaryFiltre
-       
-        foreach (var entry in apparitonMotsDictionaryFiltre)
-        {
-            Console.WriteLine($"{entry.Key}: {entry.Value}");
-        }
 
-        Console.WriteLine("nombre de mots avant selctions: " + apparitonMotsDictionary.Count());
-        Console.WriteLine("nombre de mots après selections: " + apparitonMotsDictionaryFiltre.Count());
+        return similarityArticle;
+    }
 
-        // on verfie la similarité des articles
+    static double CalculateSimilarity(Dictionary<string, int> article1, Dictionary<string, int> article2)
+    {
+        // Jaccard similarity :
+        var intersection = new HashSet<string>(article1.Keys);
+        intersection.IntersectWith(article2.Keys);
 
+        var union = new HashSet<string>(article1.Keys);
+        union.UnionWith(article2.Keys);
 
-
-
-
-
-
-
-
-
-        // foreach (string nomFichier in nomsFichiers)
-        // {
-        //     string contenu = File.ReadAllText(nomFichier);
-
-        //     string contenuNettoye = SupprimerCaracteresSpeciaux(contenu);
-
-        //     Dictionary<string, int> occurencesMots = CompterOccurencesMots(contenuNettoye);
-
-        //     Dictionary<string, int> occurencesMotsFiltres = FiltrerOccurencesMots(occurencesMots);
-
-        //     dictionnaireCible = FusionnerDictionnaires(occurencesMotsFiltres, dictionnaireCible);
-          
-        // }
-        
-
-        
-
-        // var dictionnaireTrier = dictionnaireCible.OrderByDescending(entry => entry.Value);
-        // foreach (var entry in dictionnaireTrier)
-        // {
-        //     Console.WriteLine($"{entry.Key}: {entry.Value}");
-        // }
+        return (double)intersection.Count / union.Count;
     }
 
     static string SupprimerCaracteresSpeciaux(string input)
@@ -105,54 +182,79 @@ class Program
         return motsSansEspacesRedondants;
     }
 
-    static Dictionary<string, int> CompterOccurencesMots(string input)
+    static Dictionary<string, int> KMeansClustering(Dictionary<string, Dictionary<string, double>> similarityArticle, int k)
     {
-        Dictionary<string, int> occurencesMots = new Dictionary<string, int>();
+        var clusteringResult = new Dictionary<string, int>();
 
-        string[] mots = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+        // Initialiser les centroïdes
+        var centroidArticles = similarityArticle.Keys.Take(k).ToList();
 
-        foreach (string mot in mots)
+        // Initialiser les afectation des grope
+        foreach (var article in similarityArticle.Keys)
         {
-            if (occurencesMots.ContainsKey(mot))
+            clusteringResult[article] = -1; // -1 pour les articles non assignés à un cluster
+        }
+
+        bool converge = false;
+        while (!converge)
+        {
+            // Affecter chaque article au cluster du centroïde le plus proche
+            foreach (var article in similarityArticle.Keys)
             {
-                occurencesMots[mot]++;
+                double maxSimilarity = double.MinValue;
+                int maxCluster = -1;
+
+                foreach (var centroid in centroidArticles)
+                {
+                    if (similarityArticle[article][centroid] > maxSimilarity)
+                    {
+                        maxSimilarity = similarityArticle[article][centroid];
+                        maxCluster = centroidArticles.IndexOf(centroid);
+                    }
+                }
+
+                clusteringResult[article] = maxCluster;
+            }
+
+            // Mettre à jour les centroïdes
+            var newCentroidArticles = new List<string>();
+
+            for (int cluster = 0; cluster < k; cluster++)
+            {
+                var articlesInCluster = clusteringResult.Where(x => x.Value == cluster).Select(x => x.Key).ToList();
+                double maxSimilaritySum = double.MinValue;
+                string newCentroid = string.Empty;
+
+                foreach (var article1 in articlesInCluster)
+                {
+                    double similaritySum = 0.0;
+
+                    foreach (var article2 in articlesInCluster)
+                    {
+                        similaritySum += similarityArticle[article1][article2];
+                    }
+
+                    if (similaritySum > maxSimilaritySum)
+                    {
+                        maxSimilaritySum = similaritySum;
+                        newCentroid = article1;
+                    }
+                }
+
+                newCentroidArticles.Add(newCentroid);
+            }
+
+            // Vérifier la convergence
+            if (centroidArticles.SequenceEqual(newCentroidArticles))
+            {
+                converge = true;
             }
             else
             {
-                occurencesMots[mot] = 1;
+                centroidArticles = newCentroidArticles;
             }
         }
 
-        return occurencesMots;
-    }
-
-    static Dictionary<string, int> FiltrerOccurencesMots(Dictionary<string, int> occurencesMots)
-    {
-        int totalCount = occurencesMots.Sum(entry => entry.Value);
-        int minCount = (int)(totalCount * 0.1); // ici j'ai utilisé 3%, car 10% était trop élevé et retounait rien
-        int maxCount = (int)(totalCount * 0.5);
-
-        var occurencesMotsFiltres = occurencesMots.Where(entry => entry.Key.Length > 2)
-                                                  .Where(entry => entry.Value >= minCount && entry.Value <= maxCount)
-                                                  .ToDictionary(entry => entry.Key, entry => entry.Value);
-
-        return occurencesMotsFiltres;
-    }
-
-    static Dictionary<string, int> FusionnerDictionnaires(Dictionary<string, int> sources, Dictionary<string, int> cible)
-    {
-        foreach (var source in sources)
-        {
-            if (cible.ContainsKey(source.Key))
-            {
-                cible[source.Key] += source.Value;
-            }
-            else
-            {
-                cible[source.Key] = source.Value;
-            }
-        }
-
-        return cible;
+        return clusteringResult;
     }
 }
